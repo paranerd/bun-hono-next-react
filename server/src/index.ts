@@ -7,6 +7,11 @@ app.get('/', (c) => {
   return c.text('Hello Hono!');
 });
 
+app.get('/hello', (c) => {
+  const name = process.env.NAME || 'World';
+  return c.text(`Hello ${name}`);
+});
+
 app.use('/favicon.png', serveStatic({ path: '/src/favicon.png' }));
 
 app.get('/posts', (c) => {
@@ -18,4 +23,10 @@ app.get('/posts/:id', (c) => {
   return c.text(`Post ${id}`);
 });
 
-export default app;
+const port = parseInt(process.env.PORT!) || 3000;
+console.log(`Running at http://localhost:${port}`);
+
+export default {
+  port,
+  fetch: app.fetch,
+};
